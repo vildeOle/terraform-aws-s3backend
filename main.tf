@@ -14,7 +14,7 @@ resource "random_string" "rand" {
 
 }
 
-resource "aws_resurcegroups_group" "resourcegroups_group" {
+resource "aws_resourcegroups_group" "resourcegroups_group" {
     name = "${local.namespace}-group"
     resource_query {
         query = <<-JSON
@@ -58,7 +58,7 @@ resource "aws_s3_bucket" "s3_bucket" {
     }
 }
 
-resource "aws_s3_bukcet_public_access_block" "s3_bucket" {
+resource "aws_s3_bucket_public_access_block" "s3_bucket" {
     bucket = aws_s3_bucket.s3_bucket.id
 
     block_public_acls = true
