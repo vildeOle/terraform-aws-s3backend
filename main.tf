@@ -41,22 +41,26 @@ resource "aws_s3_bucket" "s3_bucket" {
   bucket        = "${local.namespace}-state-bucket"
   force_destroy = var.force_destroy_state
  
-  versioning {
-    enabled = true
+  tags = {
+    ResourceGroup = local.namespace
   }
- 
-  server_side_encryption_configuration {
+}
+
+resource "aws_s3_bucket_versioning" "s3_bucket_versioning" {
+  bucket = "${local.namespace}-state-bucket"
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "server_side_encryption_configuration" {
+    bucket = "${local.namespace}-state-bucket"
     rule {
       apply_server_side_encryption_by_default {
         sse_algorithm     = "aws:kms"
         kms_master_key_id = aws_kms_key.kms_key.arn
       }
     }
-  }
- 
-  tags = {
-    ResourceGroup = local.namespace
-  }
 }
  
 resource "aws_s3_bucket_public_access_block" "s3_bucket" {
